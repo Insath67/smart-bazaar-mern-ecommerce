@@ -48,6 +48,11 @@ export const Cart = ({ checkout }) => {
   const cartItemRemoveStatus = useSelector(selectCartItemRemoveStatus);
   const dispatch = useDispatch();
 
+  const formatPrice = (value) => {
+    const number = Number(value || 0);
+    return Number.isInteger(number) ? number : number.toFixed(2);
+  };
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -75,93 +80,250 @@ export const Cart = ({ checkout }) => {
     };
   }, [dispatch]);
 
+  /*
+    Compact checkout summary mode.
+    This is used inside Checkout.jsx right-side order summary.
+    No remove buttons. No quantity controls. Clean summary only.
+  */
+  if (checkout) {
+    return (
+      <Stack spacing={2.2} sx={{ width: "100%" }}>
+        <Stack spacing={1.4}>
+          {items.map((item) => {
+            const product = item.product;
+            const itemTotal = Number(product.price) * Number(item.quantity);
+
+            return (
+              <Paper
+                key={item._id}
+                elevation={0}
+                sx={{
+                  p: 1.4,
+                  borderRadius: "20px",
+                  border: "1px solid rgba(15,23,42,0.08)",
+                  background:
+                    "linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)",
+                }}
+              >
+                <Stack direction="row" spacing={1.4} alignItems="center">
+                  <Box
+                    component={Link}
+                    to={`/product-details/${product._id}`}
+                    sx={{
+                      width: 82,
+                      minWidth: 82,
+                      aspectRatio: "1 / 1",
+                      borderRadius: "16px",
+                      overflow: "hidden",
+                      background:
+                        "radial-gradient(circle at top left, #ffffff 0%, #f3f4f6 45%, #e5e7eb 100%)",
+                      border: "1px solid rgba(15,23,42,0.08)",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <img
+                      src={product.thumbnail}
+                      alt={`${product.title} image`}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        display: "block",
+                      }}
+                    />
+                  </Box>
+
+                  <Stack spacing={0.5} sx={{ flex: 1, minWidth: 0 }}>
+                    <Typography
+                      component={Link}
+                      to={`/product-details/${product._id}`}
+                      sx={{
+                        textDecoration: "none",
+                        color: "#0f172a",
+                        fontWeight: 950,
+                        fontSize: ".98rem",
+                        lineHeight: 1.2,
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                        "&:hover": {
+                          color: "#f59e0b",
+                        },
+                      }}
+                    >
+                      {product.title}
+                    </Typography>
+
+                    <Typography
+                      sx={{
+                        color: "#64748b",
+                        fontWeight: 800,
+                        fontSize: ".82rem",
+                      }}
+                    >
+                      Qty: {item.quantity} × ${formatPrice(product.price)}
+                    </Typography>
+                  </Stack>
+
+                  <Typography
+                    sx={{
+                      color: "#0f172a",
+                      fontWeight: 950,
+                      fontSize: "1rem",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    ${formatPrice(itemTotal)}
+                  </Typography>
+                </Stack>
+              </Paper>
+            );
+          })}
+        </Stack>
+
+        <Divider />
+
+        <Stack spacing={1.5}>
+          <Stack direction="row" justifyContent="space-between">
+            <Typography sx={{ color: "#64748b", fontWeight: 800 }}>
+              Subtotal
+            </Typography>
+            <Typography sx={{ fontWeight: 950 }}>
+              ${formatPrice(subtotal)}
+            </Typography>
+          </Stack>
+
+          <Stack direction="row" justifyContent="space-between">
+            <Typography sx={{ color: "#64748b", fontWeight: 800 }}>
+              Shipping
+            </Typography>
+            <Typography sx={{ fontWeight: 950 }}>
+              ${formatPrice(SHIPPING)}
+            </Typography>
+          </Stack>
+
+          <Stack direction="row" justifyContent="space-between">
+            <Typography sx={{ color: "#64748b", fontWeight: 800 }}>
+              Taxes
+            </Typography>
+            <Typography sx={{ fontWeight: 950 }}>
+              ${formatPrice(TAXES)}
+            </Typography>
+          </Stack>
+        </Stack>
+
+        <Divider />
+
+        <Stack direction="row" justifyContent="space-between">
+          <Typography
+            sx={{
+              fontSize: "1.18rem",
+              fontWeight: 950,
+              color: "#0f172a",
+            }}
+          >
+            Total
+          </Typography>
+
+          <Typography
+            sx={{
+              fontSize: "1.35rem",
+              fontWeight: 950,
+              color: "#0f172a",
+            }}
+          >
+            ${formatPrice(total)}
+          </Typography>
+        </Stack>
+      </Stack>
+    );
+  }
+
   return (
     <Box
       sx={{
-        minHeight: checkout ? "auto" : "100vh",
-        background: checkout
-          ? "transparent"
-          : "linear-gradient(180deg, #ffffff 0%, #fbfbfb 45%, #f8fafc 100%)",
-        py: checkout ? 0 : is700 ? 3 : 6,
-        px: checkout ? 0 : is700 ? 2 : 4,
+        minHeight: "100vh",
+        background:
+          "linear-gradient(180deg, #ffffff 0%, #fbfbfb 45%, #f8fafc 100%)",
+        py: is700 ? 3 : 6,
+        px: is700 ? 2 : 4,
       }}
     >
       <Stack
-        spacing={checkout ? 3 : 4}
+        spacing={4}
         sx={{
-          maxWidth: checkout ? "100%" : "1350px",
+          maxWidth: "1350px",
           mx: "auto",
         }}
       >
-        {!checkout && (
-          <Stack
-            direction={is700 ? "column" : "row"}
-            justifyContent="space-between"
-            alignItems={is700 ? "flex-start" : "center"}
-            spacing={2}
-          >
-            <Stack spacing={0.8}>
-              <Chip
-                label="Smart Bazaar Cart"
-                sx={{
-                  width: "fit-content",
-                  background: "#111827",
-                  color: "#ffffff",
-                  fontWeight: 900,
-                }}
-              />
-
-              <Typography
-                sx={{
-                  fontSize: is500 ? "2rem" : "2.8rem",
-                  fontWeight: 950,
-                  color: "#0f172a",
-                  letterSpacing: "-.055em",
-                  lineHeight: 1,
-                }}
-              >
-                Shopping Cart
-              </Typography>
-
-              <Typography
-                sx={{
-                  color: "#64748b",
-                  fontWeight: 700,
-                  fontSize: ".98rem",
-                }}
-              >
-                Review your selected products before checkout.
-              </Typography>
-            </Stack>
-
-            <Button
-              component={Link}
-              to="/"
-              startIcon={<ArrowBackOutlinedIcon />}
+        <Stack
+          direction={is700 ? "column" : "row"}
+          justifyContent="space-between"
+          alignItems={is700 ? "flex-start" : "center"}
+          spacing={2}
+        >
+          <Stack spacing={0.8}>
+            <Chip
+              label="Smart Bazaar Cart"
               sx={{
-                textTransform: "none",
+                width: "fit-content",
+                background: "#111827",
+                color: "#ffffff",
                 fontWeight: 900,
-                borderRadius: "999px",
-                px: 2.5,
-                py: 1.2,
-                color: "#111827",
-                background: "#ffffff",
-                border: "1px solid rgba(15,23,42,0.1)",
-                boxShadow: "0 12px 28px rgba(15,23,42,0.08)",
-                "&:hover": {
-                  background: "#111827",
-                  color: "#ffffff",
-                },
+              }}
+            />
+
+            <Typography
+              sx={{
+                fontSize: is500 ? "2rem" : "2.8rem",
+                fontWeight: 950,
+                color: "#0f172a",
+                letterSpacing: "-.055em",
+                lineHeight: 1,
               }}
             >
-              Continue Shopping
-            </Button>
+              Shopping Cart
+            </Typography>
+
+            <Typography
+              sx={{
+                color: "#64748b",
+                fontWeight: 700,
+                fontSize: ".98rem",
+              }}
+            >
+              Review your selected products before checkout.
+            </Typography>
           </Stack>
-        )}
+
+          <Button
+            component={Link}
+            to="/"
+            startIcon={<ArrowBackOutlinedIcon />}
+            sx={{
+              textTransform: "none",
+              fontWeight: 900,
+              borderRadius: "999px",
+              px: 2.5,
+              py: 1.2,
+              color: "#111827",
+              background: "#ffffff",
+              border: "1px solid rgba(15,23,42,0.1)",
+              boxShadow: "0 12px 28px rgba(15,23,42,0.08)",
+              "&:hover": {
+                background: "#111827",
+                color: "#ffffff",
+              },
+            }}
+          >
+            Continue Shopping
+          </Button>
+        </Stack>
 
         <Stack
-          direction={checkout || is1000 ? "column" : "row"}
-          spacing={checkout ? 3 : 4}
+          direction={is1000 ? "column" : "row"}
+          spacing={4}
           alignItems="flex-start"
         >
           {/* Cart items */}
@@ -170,12 +332,10 @@ export const Cart = ({ checkout }) => {
             sx={{
               flex: 1,
               width: "100%",
-              borderRadius: checkout ? "24px" : "32px",
+              borderRadius: "32px",
               border: "1px solid rgba(15, 23, 42, 0.08)",
               background: "rgba(255,255,255,0.92)",
-              boxShadow: checkout
-                ? "0 12px 35px rgba(15,23,42,0.06)"
-                : "0 24px 70px rgba(15,23,42,0.10)",
+              boxShadow: "0 24px 70px rgba(15,23,42,0.10)",
               overflow: "hidden",
             }}
           >
@@ -230,7 +390,7 @@ export const Cart = ({ checkout }) => {
               </Stack>
 
               <Chip
-                label={`$${subtotal}`}
+                label={`$${formatPrice(subtotal)}`}
                 sx={{
                   background: "#fef3c7",
                   color: "#92400e",
@@ -260,8 +420,8 @@ export const Cart = ({ checkout }) => {
                   <CartItem
                     id={item._id}
                     title={item.product.title}
-                    brand={item.product.brand.name}
-                    category={item.product.category.name}
+                    brand={item.product.brand?.name || item.product.brand || "Smart Bazaar"}
+                    category={item.product.category?.name || item.product.category || ""}
                     price={item.product.price}
                     quantity={item.quantity}
                     thumbnail={item.product.thumbnail}
@@ -277,16 +437,14 @@ export const Cart = ({ checkout }) => {
           <Paper
             elevation={0}
             sx={{
-              width: checkout || is1000 ? "100%" : "380px",
-              position: checkout || is1000 ? "static" : "sticky",
+              width: is1000 ? "100%" : "380px",
+              position: is1000 ? "static" : "sticky",
               top: "100px",
-              borderRadius: checkout ? "24px" : "32px",
+              borderRadius: "32px",
               border: "1px solid rgba(15, 23, 42, 0.08)",
               background:
                 "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,250,252,0.96) 100%)",
-              boxShadow: checkout
-                ? "0 12px 35px rgba(15,23,42,0.06)"
-                : "0 24px 70px rgba(15,23,42,0.10)",
+              boxShadow: "0 24px 70px rgba(15,23,42,0.10)",
               overflow: "hidden",
             }}
           >
@@ -294,7 +452,7 @@ export const Cart = ({ checkout }) => {
               <Stack spacing={0.5}>
                 <Typography
                   sx={{
-                    fontSize: checkout ? "1.4rem" : "1.7rem",
+                    fontSize: "1.7rem",
                     fontWeight: 950,
                     letterSpacing: "-.04em",
                     color: "#0f172a",
@@ -321,21 +479,27 @@ export const Cart = ({ checkout }) => {
                   <Typography sx={{ color: "#64748b", fontWeight: 800 }}>
                     Subtotal
                   </Typography>
-                  <Typography sx={{ fontWeight: 950 }}>${subtotal}</Typography>
+                  <Typography sx={{ fontWeight: 950 }}>
+                    ${formatPrice(subtotal)}
+                  </Typography>
                 </Stack>
 
                 <Stack direction="row" justifyContent="space-between">
                   <Typography sx={{ color: "#64748b", fontWeight: 800 }}>
                     Shipping
                   </Typography>
-                  <Typography sx={{ fontWeight: 950 }}>${SHIPPING}</Typography>
+                  <Typography sx={{ fontWeight: 950 }}>
+                    ${formatPrice(SHIPPING)}
+                  </Typography>
                 </Stack>
 
                 <Stack direction="row" justifyContent="space-between">
                   <Typography sx={{ color: "#64748b", fontWeight: 800 }}>
                     Taxes
                   </Typography>
-                  <Typography sx={{ fontWeight: 950 }}>${TAXES}</Typography>
+                  <Typography sx={{ fontWeight: 950 }}>
+                    ${formatPrice(TAXES)}
+                  </Typography>
                 </Stack>
               </Stack>
 
@@ -359,62 +523,60 @@ export const Cart = ({ checkout }) => {
                     color: "#0f172a",
                   }}
                 >
-                  ${total}
+                  ${formatPrice(total)}
                 </Typography>
               </Stack>
 
-              {!checkout && (
-                <Stack spacing={1.4}>
-                  <motion.div whileHover={{ scale: 1.015 }} whileTap={{ scale: 0.99 }}>
-                    <Button
-                      fullWidth
-                      component={Link}
-                      to="/checkout"
-                      startIcon={<ShoppingCartCheckoutOutlinedIcon />}
-                      sx={{
-                        height: "3.35rem",
-                        borderRadius: "16px",
+              <Stack spacing={1.4}>
+                <motion.div whileHover={{ scale: 1.015 }} whileTap={{ scale: 0.99 }}>
+                  <Button
+                    fullWidth
+                    component={Link}
+                    to="/checkout"
+                    startIcon={<ShoppingCartCheckoutOutlinedIcon />}
+                    sx={{
+                      height: "3.35rem",
+                      borderRadius: "16px",
+                      background:
+                        "linear-gradient(135deg, #111827 0%, #000000 100%)",
+                      color: "#ffffff",
+                      fontWeight: 950,
+                      textTransform: "none",
+                      fontSize: "1rem",
+                      boxShadow: "0 16px 32px rgba(0,0,0,0.18)",
+                      "&:hover": {
                         background:
-                          "linear-gradient(135deg, #111827 0%, #000000 100%)",
-                        color: "#ffffff",
-                        fontWeight: 950,
-                        textTransform: "none",
-                        fontSize: "1rem",
-                        boxShadow: "0 16px 32px rgba(0,0,0,0.18)",
-                        "&:hover": {
-                          background:
-                            "linear-gradient(135deg, #000000 0%, #111827 100%)",
-                          boxShadow: "0 20px 42px rgba(0,0,0,0.25)",
-                        },
-                      }}
-                    >
-                      Proceed to Checkout
-                    </Button>
-                  </motion.div>
-
-                  <motion.div
-                    style={{ alignSelf: "center" }}
-                    whileHover={{ y: 2 }}
-                    whileTap={{ scale: 0.98 }}
+                          "linear-gradient(135deg, #000000 0%, #111827 100%)",
+                        boxShadow: "0 20px 42px rgba(0,0,0,0.25)",
+                      },
+                    }}
                   >
-                    <Chip
-                      component={Link}
-                      to="/"
-                      clickable
-                      label="or continue shopping"
-                      variant="outlined"
-                      sx={{
-                        cursor: "pointer",
-                        borderRadius: "999px",
-                        fontWeight: 800,
-                        color: "#475569",
-                        borderColor: "rgba(15,23,42,0.14)",
-                        textDecoration: "none",
-                      }}
-                    />
-                  </motion.div>
-                </Stack>
-              )}
+                    Proceed to Checkout
+                  </Button>
+                </motion.div>
+
+                <motion.div
+                  style={{ alignSelf: "center" }}
+                  whileHover={{ y: 2 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Chip
+                    component={Link}
+                    to="/"
+                    clickable
+                    label="or continue shopping"
+                    variant="outlined"
+                    sx={{
+                      cursor: "pointer",
+                      borderRadius: "999px",
+                      fontWeight: 800,
+                      color: "#475569",
+                      borderColor: "rgba(15,23,42,0.14)",
+                      textDecoration: "none",
+                    }}
+                  />
+                </motion.div>
+              </Stack>
 
               <Divider />
 
