@@ -1,178 +1,364 @@
-## MERN Ecommerce: A Seamless Shopping Experience Powered by the MERN Stack, Redux Toolkit, and Material UI
+# Smart Bazaar - MERN E-Commerce Web Application
 
-### Also try -> [https://mernchat.in](https://mernchat.in)
-### ```Note✨: I have another amazing project on``` [end-to-end-encrypted-chat-application](https://github.com/RishiBakshii/mern-chat) ```using Next.js, Prisma, Postgresql, Express, Socket.io.```
+Smart Bazaar is a modern MERN stack e-commerce web application designed with a premium shopping experience. The system includes user authentication, product browsing, cart management, wishlist handling, order flow, admin product management, and a responsive premium UI.
 
-**MERN Ecommerce** is a full-stack application designed to transform your online shopping experience. Built with the MERN stack (MongoDB, Express.js, React, Node.js), it leverages Redux Toolkit for efficient state management and Material UI for a sleek, user-friendly interface. This project offers a robust platform for both users and admins, packed with essential features for a seamless experience.
+This project was customized and upgraded with a modern brand identity, improved product listing layout, premium product cards, enhanced navigation bar, redesigned login/signup pages, and a polished footer.
 
-![ecommerce-homepage](https://github.com/RishiBakshii/mern-ecommerce/blob/main/frontend/src/assets/images/front.png?raw=true)
-<!-- ![ecommerce-banner](https://github.com/RishiBakshii/mern-ecommerce/blob/main/frontend/src/assets/images/banner4.jpg?raw=true) -->
-![ecommerce-banner](https://github.com/RishiBakshii/mern-ecommerce/blob/main/frontend/src/assets/images/banner3.jpg?raw=true)
+---
 
+## 🚀 Project Overview
 
-# **Features**
+Smart Bazaar allows users to browse products, create an account, login, add products to cart, manage wishlist items, and place orders. Admin users can manage product-related operations through the admin dashboard.
 
-### **User:**
-- **Product Reviews:**
-  - Write, edit, and delete reviews.
-  - Instant updates on ratings and star percentages.
-  
-- **Wishlist:**
-  - Add, remove, and annotate products with personalized notes.
-  
-- **Order Management:**
-  - Create new orders and view order history.
-  
-- **Profile Management:**
-  - Manage email, username, and multiple addresses.
-  
-- **Shopping Cart:**
-  - Add products, adjust quantities, and view subtotals.
+The project is built using the MERN stack:
 
-### **Admin:**
-- **Product Management:**
-  - Add, edit, delete, and soft-delete products.
-  - Manage product attributes like name and stock.
-  
-- **Order Management:**
-  - View and update order details and status.
+* **MongoDB** - Database
+* **Express.js** - Backend API
+* **React.js** - Frontend UI
+* **Node.js** - Server runtime
 
-### **Security & User Experience:**
-- **Secure Authentication:**
-  - Login, signup, OTP verification, password reset, and logout.
+---
 
-- **Intuitive Interface:**
-  - Powered by Material UI for a visually appealing and user-friendly experience.
+## ✨ Key Features
 
-### **Scalability:**
-- **Built for Growth:**
-  - Scalable architecture to handle increasing user demands.
+### User Features
 
+* User registration and login
+* OTP/email verification support
+* Browse products
+* Product sorting
+* Product details page
+* Add to cart
+* Wishlist management
+* Order management
+* User profile
+* Responsive shopping experience
 
-# **Project Setup**
+### Admin Features
 
-### Prerequisites
-- Node.js ( version v21.1.0 or later )
-- MongoDB installed and running locally
+* Admin dashboard
+* Add new products
+* Update product details
+* View and manage orders
+* Product, brand, and category handling
 
-### Clone the project
+### UI/UX Improvements
+
+* Premium Smart Bazaar branding
+* Modern responsive navbar
+* Premium product cards
+* Improved product listing layout
+* Redesigned login page
+* Redesigned signup page
+* Premium footer design
+* Clean spacing, shadows, badges, and hover effects
+
+---
+
+## 🛠️ Technologies Used
+
+### Frontend
+
+* React.js
+* React Router
+* Redux Toolkit
+* Material UI
+* Framer Motion
+* React Hook Form
+* Lottie React
+* React Toastify
+
+### Backend
+
+* Node.js
+* Express.js
+* MongoDB
+* Mongoose
+* JWT Authentication
+* Bcrypt.js
+* Nodemailer
+* Cookie Parser
+* Dotenv
+
+---
+
+## 📁 Project Structure
 
 ```bash
-  git clone https://github.com/RishiBakshii/mern-ecommerce.git
+smart-bazaar-mern-ecommerce/
+│
+├── backend/
+│   ├── controllers/
+│   ├── database/
+│   ├── middlewares/
+│   ├── models/
+│   ├── routes/
+│   ├── seed/
+│   ├── utils/
+│   ├── index.js
+│   ├── package.json
+│   └── .env
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── features/
+│   │   ├── pages/
+│   │   ├── app/
+│   │   └── constants/
+│   ├── package.json
+│   └── .env
+│
+└── README.md
 ```
 
-### Navigate to the project directory
+---
+
+## ⚙️ Installation and Setup
+
+### 1. Clone the Repository
 
 ```bash
-  cd mern-ecommerce
+git clone https://github.com/YOUR_USERNAME/smart-bazaar-mern-ecommerce.git
+cd smart-bazaar-mern-ecommerce
 ```
 
-### Install dependencies for frontend and backend separately
-**Tip:** To efficiently install dependencies for both frontend and backend simultaneously, use split terminals.
+---
 
-Install frontend dependencies
-```bash
-cd frontend
-npm install
-```
+## 🔧 Backend Setup
 
-Install backend dependencies
+Go to the backend folder:
 
 ```bash
 cd backend
+```
+
+Install dependencies:
+
+```bash
 npm install
 ```
 
+Create a `.env` file inside the `backend` folder:
 
-### Environment Variables
-**Backend**
-- Create a `.env` file in the `backend` directory.
-- Add the following variables with appropriate values
-```bash
-# Database connection string
-MONGO_URI="mongodb://localhost:27017/your-database-name"
-
-# Frontend URL (adjust if needed)
-ORIGIN="http://localhost:3000"
-
-# Email credentials for sending password resets and OTPs
-EMAIL="your-email@example.com"
-PASSWORD="your-email-password"
-
-# Token and cookie expiration settings
-LOGIN_TOKEN_EXPIRATION="30d"  # Days
-OTP_EXPIRATION_TIME="120000"  # Milliseconds
-PASSWORD_RESET_TOKEN_EXPIRATION="2m"  # Minutes
-COOKIE_EXPIRATION_DAYS="30"    # Days
-
-# Secret key for jwt security
-SECRET_KEY="your-secret-key"
-
-# Environment (production/development)
-PRODUCTION="false" # Initially set to false for development
+```env
+MONGO_URI=mongodb://127.0.0.1:27017/mern-ecommerce
+PORT=8000
+JWT_SECRET=mysecret123
+SECRET_KEY=mysecret123
+LOGIN_TOKEN_EXPIRATION=7d
+PASSWORD_RESET_TOKEN_EXPIRATION=10m
+COOKIE_EXPIRATION_DAYS=7
+OTP_EXPIRATION_TIME=600000
+PRODUCTION=false
+ORIGIN=http://localhost:3000
 ```
 
-**Frontend**
-- Create a `.env` file in the `frontend` directory
-- Add the following variable:
+Start the backend server:
+
 ```bash
-# Backend URL (adjust if needed)
-REACT_APP_BASE_URL="http://localhost:8000" 
+npm run dev
 ```
 
-**Important**
-- Replace all placeholders (e.g., your_database_name, your_email) with your actual values.
-- Exclude the `.env` file from version control to protect sensitive information.
+The backend will run on:
 
-### Data seeding
-- **Get started quickly with pre-populated data**: Populate your database with sample users, products, reviews, and carts, enabling you to test functionalities without manual data entry.
-
-**Steps**:
-- Open a new terminal window.
-- Navigate to the `backend` directory: `cd backend`
-- Run the seeding script: `npm run seed` ( This script executes the `seed.js` file within the `seed` subdirectory equivalent to running `node seed/seed.js` )
-### Running Development Servers
-
-**Important:**
-
-- **Separate terminals**: Run the commands in separate terminal windows or use `split terminal` to avoid conflicts.
-- **Nodemon required**: Ensure you have `nodemon` installed globally to run the backend development servers using `npm run dev`. You can install it globally using `npm install -g nodemon`.
-
-#### Start the backend server
-- Navigate to the `backend` directory: `cd backend`
-- Start the server: `npm run dev` (or npm start)
-- You should see a message indicating the server is running, usually on port 8000.
-     
-#### Start the frontend server:
-- Navigate to the `frontend` directory: `cd frontend`
-- Start the server: `npm start`
-- You should see a message indicating the server is running, usually on port 3000.
-
-### Login with demo account (Optional)
-- After successfully seeding the database, you can now explore the application's functionalities using pre-populated sample data.
-- here are the `login credentials`
 ```bash
-  email: demo@gmail.com
-  pass: helloWorld@123
+http://localhost:8000
 ```
 
-- **Please Note**: While the demo account provides a convenient way to explore many features, it has some limitations:
-    - **Password Reset and OTP Verification**: Due to security reasons, the demo account uses a non-real email address. Therefore, password reset and OTP verification functionalities are not available for this account.
+---
 
-    **What this means**:
-    - You cannot request a password reset or receive verification codes on the demo email address.
-    - To test password reset and OTP verification flows, you need to create a genuine account with a valid email address.
+## 🌱 Seed Database
 
-    **What to do?**
-    - If you're primarily interested in exploring other functionalities like wishlist, cart, and order history, the demo account is sufficient.
-    - To test password reset and OTP verification, create a personal account with a valid email address.
-### Accessing the Application
-Once both servers are running, you can access them at the following URL's:
-- Backend: http://localhost:8000
-- Frontend: http://localhost:3000
+To insert sample products, brands, categories, users, cart, wishlist, reviews, and orders, run:
 
-## **Bonus**
-Don't forget to star the repository and share your feedback!✨
+```bash
+node .\seed\seed.js
+```
 
-## Authors
-- [@RishiBakshii](https://github.com/RishiBakshii)
+Expected output:
+
+```bash
+connected to DB
+Seed [started] please wait..
+Brand seeded successfully
+Category seeded successfully
+Product seeded successfully
+User seeded successfully
+Address seeded successfully
+Wishlist seeded successfully
+Cart seeded successfully
+Review seeded successfully
+Order seeded successfully
+Seed completed..
+```
+
+---
+
+## 🎨 Update Product Images
+
+If product images do not load properly, run the image update script:
+
+```bash
+node updateProductImages.js
+```
+
+This updates product thumbnails with working placeholder images.
+
+---
+
+## 💻 Frontend Setup
+
+Open a new terminal and go to the frontend folder:
+
+```bash
+cd frontend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the frontend:
+
+```bash
+npm start
+```
+
+The frontend will run on:
+
+```bash
+http://localhost:3000
+```
+
+---
+
+## 🔐 Authentication Flow
+
+1. User registers with username, email, and password.
+2. System creates a user account.
+3. OTP verification is supported.
+4. User logs in after verification.
+5. Authenticated users can access cart, wishlist, profile, and orders.
+
+---
+
+## 📸 Screenshots
+
+Add your project screenshots here after uploading them to GitHub.
+
+### Home Page
+
+```md
+![Home Page](./screenshots/home.png)
+```
+
+### Login Page
+
+```md
+![Login Page](./screenshots/login.png)
+```
+
+### Signup Page
+
+```md
+![Signup Page](./screenshots/signup.png)
+```
+
+### Product Listing
+
+```md
+![Product Listing](./screenshots/products.png)
+```
+
+---
+
+## 📌 Main Pages
+
+* `/` - Home / Product Listing
+* `/login` - User Login
+* `/signup` - User Registration
+* `/wishlist` - Wishlist
+* `/cart` - Cart
+* `/orders` - User Orders
+* `/profile` - User Profile
+* `/admin/orders` - Admin Orders
+* `/admin/add-product` - Add Product
+
+---
+
+## 🧪 API Testing
+
+You can test backend APIs using Postman.
+
+Example API:
+
+```bash
+GET http://localhost:8000/products
+```
+
+Auth APIs:
+
+```bash
+POST http://localhost:8000/auth/signup
+POST http://localhost:8000/auth/login
+GET  http://localhost:8000/auth/check-auth
+```
+
+---
+
+## 🔒 Important Notes
+
+Do not upload `.env` files or `node_modules` to GitHub.
+
+Recommended `.gitignore`:
+
+```gitignore
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+.env
+frontend/.env
+backend/.env
+
+build/
+frontend/build/
+dist/
+
+npm-debug.log*
+.DS_Store
+```
+
+---
+
+## 👨‍💻 Author
+
+**Muhammad Insath**
+
+* GitHub: https://github.com/insath67
+* LinkedIn: [www.linkedin.com/in/muhammad-insath-20b070282](http://www.linkedin.com/in/muhammad-insath-20b070282)
+
+---
+
+## 📄 License
+
+This project is developed for learning, portfolio, and academic purposes.
+
+---
+
+## ⭐ Project Status
+
+Smart Bazaar is currently running successfully in local development with:
+
+* Backend server
+* MongoDB database
+* Seeded product data
+* Premium frontend UI
+* Authentication system
+* Cart and wishlist features
+
+Future improvements can include online payment integration, advanced search, real email SMTP configuration, order tracking, and deployment.
