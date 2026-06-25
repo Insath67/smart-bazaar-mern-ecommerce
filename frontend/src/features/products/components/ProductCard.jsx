@@ -117,19 +117,6 @@ export const ProductCard = ({
             zIndex: 3,
           }}
         >
-          <Chip
-            label="Premium"
-            size="small"
-            sx={{
-              height: 25,
-              fontWeight: 800,
-              fontSize: ".7rem",
-              color: "#111827",
-              background: "rgba(255,255,255,0.92)",
-              backdropFilter: "blur(8px)",
-              border: "1px solid rgba(0,0,0,0.08)",
-            }}
-          />
 
           {!isAdminCard && (
             <Box
