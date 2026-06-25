@@ -33,3 +33,4 @@ export {
     WishlistPage,
     OtpVerificationPage
 }
+export { AdminProfilePage } from "./AdminProfilePage";

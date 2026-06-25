@@ -592,53 +592,6 @@ export const AdminDashBoard = () => {
               >
                 Filters {activeFilterCount > 0 ? `(${activeFilterCount})` : ""}
               </Button>
-
-              <Button
-                fullWidth={is488}
-                component={Link}
-                to="/admin/orders"
-                startIcon={<ReceiptLongOutlinedIcon />}
-                sx={{
-                  height: "3rem",
-                  borderRadius: "16px",
-                  background: "#ffffff",
-                  color: "#111827",
-                  border: "1px solid rgba(15,23,42,0.12)",
-                  textTransform: "none",
-                  fontWeight: 950,
-                  px: 2.5,
-                  boxShadow: "0 12px 28px rgba(15,23,42,0.08)",
-                  "&:hover": {
-                    background: "#111827",
-                    color: "#ffffff",
-                  },
-                }}
-              >
-                Manage Orders
-              </Button>
-
-              <Button
-                fullWidth={is488}
-                component={Link}
-                to="/admin/add-product"
-                startIcon={<AddCircleOutlineOutlinedIcon />}
-                sx={{
-                  height: "3rem",
-                  borderRadius: "16px",
-                  background:
-                    "linear-gradient(135deg, #111827 0%, #000000 100%)",
-                  color: "#ffffff",
-                  textTransform: "none",
-                  fontWeight: 950,
-                  boxShadow: "0 16px 32px rgba(0,0,0,0.18)",
-                  "&:hover": {
-                    background:
-                      "linear-gradient(135deg, #000000 0%, #111827 100%)",
-                  },
-                }}
-              >
-                Add Product
-              </Button>
             </Stack>
           </Stack>
 

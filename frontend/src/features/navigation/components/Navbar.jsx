@@ -52,6 +52,37 @@ export const Navbar = ({ isProductList = false }) => {
   const firstName = userName?.toString()?.split(" ")[0] || "User";
   const avatarLetter = firstName?.charAt(0)?.toUpperCase() || "S";
 
+  const isAdmin = loggedInUser?.isAdmin;
+
+  const logoPath = isAdmin ? "/admin/dashboard" : "/";
+
+  const navLinks = isAdmin
+    ? [
+        { name: "Dashboard", to: "/admin/dashboard" },
+        { name: "Orders", to: "/admin/orders" },
+        { name: "Add Product", to: "/admin/add-product" },
+      ]
+    : [
+        { name: "Home", to: "/" },
+        { name: "Shop", to: "/" },
+        { name: "Wishlist", to: "/wishlist" },
+      ];
+
+  const settings = isAdmin
+    ? [
+        { name: "Dashboard", to: "/admin/dashboard" },
+        { name: "Add New Product", to: "/admin/add-product" },
+        { name: "Profile", to: "/admin/profile" },
+        { name: "Orders", to: "/admin/orders" },
+        { name: "Logout", to: "/logout" },
+      ]
+    : [
+        { name: "Home", to: "/" },
+        { name: "Profile", to: "/profile" },
+        { name: "My Orders", to: "/orders" },
+        { name: "Logout", to: "/logout" },
+      ];
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -60,33 +91,9 @@ export const Navbar = ({ isProductList = false }) => {
     setAnchorElUser(null);
   };
 
-  const handleMenuNavigate = (path) => {
-    handleCloseUserMenu();
-    navigate(path);
-  };
-
   const handleToggleFilters = () => {
     dispatch(toggleFilters());
   };
-
-  const settings = [
-    { name: "Home", to: "/" },
-    {
-      name: "Profile",
-      to: loggedInUser?.isAdmin ? "/admin/profile" : "/profile",
-    },
-    {
-      name: loggedInUser?.isAdmin ? "Orders" : "My Orders",
-      to: loggedInUser?.isAdmin ? "/admin/orders" : "/orders",
-    },
-    { name: "Logout", to: "/logout" },
-  ];
-
-  const navLinks = [
-    { name: "Home", to: "/" },
-    { name: "Shop", to: "/" },
-    { name: "Wishlist", to: "/wishlist" },
-  ];
 
   return (
     <AppBar
@@ -120,7 +127,7 @@ export const Navbar = ({ isProductList = false }) => {
           {/* Logo */}
           <Stack
             component={Link}
-            to="/"
+            to={logoPath}
             direction="row"
             alignItems="center"
             spacing={1.4}
@@ -237,7 +244,7 @@ export const Navbar = ({ isProductList = false }) => {
               </Typography>
             )}
 
-            {loggedInUser?.isAdmin && (
+            {isAdmin && (
               <Chip
                 label="Admin"
                 size="small"
@@ -249,7 +256,7 @@ export const Navbar = ({ isProductList = false }) => {
               />
             )}
 
-            {!loggedInUser?.isAdmin && (
+            {!isAdmin && (
               <Tooltip title="Cart">
                 <IconButton
                   onClick={() => navigate("/cart")}
@@ -271,7 +278,7 @@ export const Navbar = ({ isProductList = false }) => {
               </Tooltip>
             )}
 
-            {!loggedInUser?.isAdmin && (
+            {!isAdmin && (
               <Tooltip title="Wishlist">
                 <IconButton
                   component={Link}
@@ -371,38 +378,18 @@ export const Navbar = ({ isProductList = false }) => {
                 </MenuItem>
               )}
 
-              {loggedInUser?.isAdmin && (
-                <MenuItem
-                  onClick={() => handleMenuNavigate("/admin/add-product")}
-                  sx={{
-                    borderRadius: "12px",
-                    px: 2,
-                    py: 1.2,
-                    "&:hover": {
-                      background: "#f8fafc",
-                    },
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      color: "#111827",
-                      fontWeight: 800,
-                      textDecoration: "none",
-                    }}
-                  >
-                    Add New Product
-                  </Typography>
-                </MenuItem>
-              )}
-
               {settings.map((setting) => (
                 <MenuItem
                   key={setting.name}
-                  onClick={() => handleMenuNavigate(setting.to)}
+                  component={Link}
+                  to={setting.to}
+                  onClick={handleCloseUserMenu}
                   sx={{
                     borderRadius: "12px",
                     px: 2,
                     py: 1.2,
+                    color: "#111827",
+                    textDecoration: "none",
                     "&:hover": {
                       background: "#f8fafc",
                     },
