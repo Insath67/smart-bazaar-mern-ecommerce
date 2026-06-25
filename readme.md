@@ -55,6 +55,53 @@ The project is built using the MERN stack:
 
 ---
 
+## 📸 Project Screenshots
+
+### Admin Dashboard
+
+![Admin Dashboard](./screenshots/admin-dashboard.png)
+
+### Admin Orders
+
+![Admin Orders](./screenshots/admin-orders.png)
+
+### Add Product
+
+![Add Product](./screenshots/add-product.png)
+
+### Update Product
+
+![Update Product](./screenshots/update-product.png)
+
+### Customer Home Page
+
+![Home Page](./screenshots/home-page.png)
+
+### Product Details Page
+
+![Product Details](./screenshots/product-details.png)
+
+### Shopping Cart
+
+![Shopping Cart](./screenshots/cart-page.png)
+
+### Checkout Page
+
+![Checkout Page](./screenshots/checkout-page.png)
+
+### Order Success Page
+
+![Order Success](./screenshots/order-success.png)
+
+### Wishlist Page
+
+![Wishlist Page](./screenshots/wishlist-page.png)
+
+### User Profile Page
+
+![User Profile](./screenshots/profile-page.png)
+
+
 ## 🛠️ Technologies Used
 
 ### Frontend
