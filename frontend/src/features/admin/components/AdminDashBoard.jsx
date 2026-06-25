@@ -35,6 +35,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import SortRoundedIcon from "@mui/icons-material/SortRounded";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
+import ReceiptLongOutlinedIcon from "@mui/icons-material/ReceiptLongOutlined";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -72,7 +73,6 @@ export const AdminDashBoard = () => {
   const [page, setPage] = useState(1);
 
   const is1200 = useMediaQuery(theme.breakpoints.down(1200));
-  const is900 = useMediaQuery(theme.breakpoints.down(900));
   const is700 = useMediaQuery(theme.breakpoints.down(700));
   const is600 = useMediaQuery(theme.breakpoints.down(600));
   const is500 = useMediaQuery(theme.breakpoints.down(500));
@@ -85,7 +85,9 @@ export const AdminDashBoard = () => {
   const deletedProducts = products.filter((product) => product.isDeleted).length;
 
   const activeFilterCount =
-    (filters.brand?.length || 0) + (filters.category?.length || 0) + (sort ? 1 : 0);
+    (filters.brand?.length || 0) +
+    (filters.category?.length || 0) +
+    (sort ? 1 : 0);
 
   const showingStart =
     safeTotalResults === 0 ? 0 : (page - 1) * ITEMS_PER_PAGE + 1;
@@ -323,27 +325,31 @@ export const AdminDashBoard = () => {
             </Typography>
 
             <Stack spacing={1}>
-              {["Totes", "Backpacks", "Travel Bags", "Hip Bags", "Laptop Sleeves"].map(
-                (item) => (
-                  <motion.div
-                    key={item}
-                    style={{ width: "fit-content" }}
-                    whileHover={{ x: 5 }}
-                    whileTap={{ scale: 0.95 }}
+              {[
+                "Totes",
+                "Backpacks",
+                "Travel Bags",
+                "Hip Bags",
+                "Laptop Sleeves",
+              ].map((item) => (
+                <motion.div
+                  key={item}
+                  style={{ width: "fit-content" }}
+                  whileHover={{ x: 5 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Typography
+                    sx={{
+                      cursor: "pointer",
+                      color: "#475569",
+                      fontWeight: 800,
+                      fontSize: ".95rem",
+                    }}
                   >
-                    <Typography
-                      sx={{
-                        cursor: "pointer",
-                        color: "#475569",
-                        fontWeight: 800,
-                        fontSize: ".95rem",
-                      }}
-                    >
-                      {item}
-                    </Typography>
-                  </motion.div>
-                )
-              )}
+                    {item}
+                  </Typography>
+                </motion.div>
+              ))}
             </Stack>
           </Paper>
 
@@ -446,7 +452,9 @@ export const AdminDashBoard = () => {
                       }}
                       control={
                         <Checkbox
-                          checked={filters.category?.includes(category._id) || false}
+                          checked={
+                            filters.category?.includes(category._id) || false
+                          }
                           onChange={handleCategoryFilters}
                           value={category._id}
                         />
@@ -583,6 +591,30 @@ export const AdminDashBoard = () => {
                 }}
               >
                 Filters {activeFilterCount > 0 ? `(${activeFilterCount})` : ""}
+              </Button>
+
+              <Button
+                fullWidth={is488}
+                component={Link}
+                to="/admin/orders"
+                startIcon={<ReceiptLongOutlinedIcon />}
+                sx={{
+                  height: "3rem",
+                  borderRadius: "16px",
+                  background: "#ffffff",
+                  color: "#111827",
+                  border: "1px solid rgba(15,23,42,0.12)",
+                  textTransform: "none",
+                  fontWeight: 950,
+                  px: 2.5,
+                  boxShadow: "0 12px 28px rgba(15,23,42,0.08)",
+                  "&:hover": {
+                    background: "#111827",
+                    color: "#ffffff",
+                  },
+                }}
+              >
+                Manage Orders
               </Button>
 
               <Button
@@ -795,7 +827,9 @@ export const AdminDashBoard = () => {
                       id={product._id}
                       title={product.title}
                       thumbnail={product.thumbnail}
-                      brand={product.brand?.name || product.brand || "Smart Bazaar"}
+                      brand={
+                        product.brand?.name || product.brand || "Smart Bazaar"
+                      }
                       price={product.price}
                       stockQuantity={product.stockQuantity}
                       isAdminCard={true}
@@ -919,29 +953,57 @@ export const AdminDashBoard = () => {
                   Try resetting filters or add a new product to your catalogue.
                 </Typography>
 
-                <Button
-                  component={Link}
-                  to="/admin/add-product"
-                  startIcon={<AddCircleOutlineOutlinedIcon />}
-                  sx={{
-                    mt: 1,
-                    height: "3rem",
-                    px: 3,
-                    borderRadius: "16px",
-                    background:
-                      "linear-gradient(135deg, #111827 0%, #000000 100%)",
-                    color: "#ffffff",
-                    fontWeight: 950,
-                    textTransform: "none",
-                    boxShadow: "0 16px 32px rgba(0,0,0,0.18)",
-                    "&:hover": {
-                      background:
-                        "linear-gradient(135deg, #000000 0%, #111827 100%)",
-                    },
-                  }}
+                <Stack
+                  direction={is488 ? "column" : "row"}
+                  spacing={1.2}
+                  justifyContent="center"
+                  sx={{ mt: 1 }}
                 >
-                  Add Product
-                </Button>
+                  <Button
+                    component={Link}
+                    to="/admin/orders"
+                    startIcon={<ReceiptLongOutlinedIcon />}
+                    sx={{
+                      height: "3rem",
+                      px: 3,
+                      borderRadius: "16px",
+                      background: "#ffffff",
+                      color: "#111827",
+                      border: "1px solid rgba(15,23,42,0.12)",
+                      fontWeight: 950,
+                      textTransform: "none",
+                      "&:hover": {
+                        background: "#111827",
+                        color: "#ffffff",
+                      },
+                    }}
+                  >
+                    Manage Orders
+                  </Button>
+
+                  <Button
+                    component={Link}
+                    to="/admin/add-product"
+                    startIcon={<AddCircleOutlineOutlinedIcon />}
+                    sx={{
+                      height: "3rem",
+                      px: 3,
+                      borderRadius: "16px",
+                      background:
+                        "linear-gradient(135deg, #111827 0%, #000000 100%)",
+                      color: "#ffffff",
+                      fontWeight: 950,
+                      textTransform: "none",
+                      boxShadow: "0 16px 32px rgba(0,0,0,0.18)",
+                      "&:hover": {
+                        background:
+                          "linear-gradient(135deg, #000000 0%, #111827 100%)",
+                      },
+                    }}
+                  >
+                    Add Product
+                  </Button>
+                </Stack>
               </Stack>
             </Paper>
           )}
@@ -982,7 +1044,8 @@ export const AdminDashBoard = () => {
                 fontWeight: 800,
               }}
             >
-              Showing {showingStart} to {showingEnd} of {safeTotalResults} results
+              Showing {showingStart} to {showingEnd} of {safeTotalResults}{" "}
+              results
             </Typography>
           </Stack>
         </Stack>
