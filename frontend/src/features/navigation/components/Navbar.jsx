@@ -26,7 +26,10 @@ import { selectLoggedInUser } from "../../auth/AuthSlice";
 import { selectWishlistItems } from "../../wishlist/WishlistSlice";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import TuneIcon from "@mui/icons-material/Tune";
-import { selectProductIsFilterOpen, toggleFilters } from "../../products/ProductSlice";
+import {
+  selectProductIsFilterOpen,
+  toggleFilters,
+} from "../../products/ProductSlice";
 
 export const Navbar = ({ isProductList = false }) => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -55,6 +58,11 @@ export const Navbar = ({ isProductList = false }) => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleMenuNavigate = (path) => {
+    handleCloseUserMenu();
+    navigate(path);
   };
 
   const handleToggleFilters = () => {
@@ -280,7 +288,10 @@ export const Navbar = ({ isProductList = false }) => {
                     },
                   }}
                 >
-                  <Badge badgeContent={wishlistItems?.length || 0} color="error">
+                  <Badge
+                    badgeContent={wishlistItems?.length || 0}
+                    color="error"
+                  >
                     <FavoriteBorderIcon />
                   </Badge>
                 </IconButton>
@@ -350,6 +361,7 @@ export const Navbar = ({ isProductList = false }) => {
                   boxShadow: "0 24px 60px rgba(15, 23, 42, 0.18)",
                   border: "1px solid rgba(15, 23, 42, 0.08)",
                   overflow: "hidden",
+                  p: 0.8,
                 },
               }}
             >
@@ -360,13 +372,23 @@ export const Navbar = ({ isProductList = false }) => {
               )}
 
               {loggedInUser?.isAdmin && (
-                <MenuItem onClick={handleCloseUserMenu}>
+                <MenuItem
+                  onClick={() => handleMenuNavigate("/admin/add-product")}
+                  sx={{
+                    borderRadius: "12px",
+                    px: 2,
+                    py: 1.2,
+                    "&:hover": {
+                      background: "#f8fafc",
+                    },
+                  }}
+                >
                   <Typography
-                    component={Link}
-                    color="text.primary"
-                    sx={{ textDecoration: "none", fontWeight: 700 }}
-                    to="/admin/add-product"
-                    textAlign="center"
+                    sx={{
+                      color: "#111827",
+                      fontWeight: 800,
+                      textDecoration: "none",
+                    }}
                   >
                     Add New Product
                   </Typography>
@@ -374,13 +396,24 @@ export const Navbar = ({ isProductList = false }) => {
               )}
 
               {settings.map((setting) => (
-                <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                <MenuItem
+                  key={setting.name}
+                  onClick={() => handleMenuNavigate(setting.to)}
+                  sx={{
+                    borderRadius: "12px",
+                    px: 2,
+                    py: 1.2,
+                    "&:hover": {
+                      background: "#f8fafc",
+                    },
+                  }}
+                >
                   <Typography
-                    component={Link}
-                    color="text.primary"
-                    sx={{ textDecoration: "none", fontWeight: 700 }}
-                    to={setting.to}
-                    textAlign="center"
+                    sx={{
+                      color: "#111827",
+                      fontWeight: 800,
+                      textDecoration: "none",
+                    }}
                   >
                     {setting.name}
                   </Typography>
