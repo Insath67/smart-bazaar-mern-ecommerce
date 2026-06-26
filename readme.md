@@ -408,4 +408,6 @@ Smart Bazaar is currently running successfully in local development with:
 * Authentication system
 * Cart and wishlist features
 
+🌐 Live Demo: https://smart-bazaar-frontend.vercel.app
+
 Future improvements can include online payment integration, advanced search, real email SMTP configuration, order tracking, and deployment.
