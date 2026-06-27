@@ -170,6 +170,7 @@ export const OtpVerfication = () => {
         sx={{
           width: "100%",
           maxWidth: 1050,
+          minHeight: isMd ? "auto" : 620,
           overflow: "hidden",
           borderRadius: "34px",
           display: "grid",
@@ -335,6 +336,8 @@ export const OtpVerfication = () => {
             sx={{
               width: "100%",
               maxWidth: 440,
+              minHeight: isSm ? 610 : 560,
+              justifyContent: "center",
             }}
           >
             <Box>
@@ -400,73 +403,80 @@ export const OtpVerfication = () => {
               <strong>{loggedInUser?.email || "your registered email"}</strong>
             </Alert>
 
-            {otpSent && (
-              <TextField
-                fullWidth
-                label="OTP code"
-                placeholder="Enter 4-digit code"
-                type="number"
-                {...register("otp", {
-                  required: "OTP is required",
-                  minLength: {
-                    value: 4,
-                    message: "Please enter a 4 digit OTP",
-                  },
-                  maxLength: {
-                    value: 4,
-                    message: "OTP must be 4 digits",
-                  },
-                })}
-                error={Boolean(errors.otp)}
-                helperText={errors.otp?.message}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <LockClockRoundedIcon sx={{ color: "#94a3b8" }} />
-                    </InputAdornment>
-                  ),
-                }}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    borderRadius: "16px",
-                    backgroundColor: "#fff",
+            <Box
+              sx={{
+                minHeight: 86,
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              {otpSent ? (
+                <TextField
+                  fullWidth
+                  label="OTP code"
+                  placeholder="Enter 4-digit code"
+                  type="number"
+                  {...register("otp", {
+                    required: "OTP is required",
+                    minLength: {
+                      value: 4,
+                      message: "Please enter a 4 digit OTP",
+                    },
+                    maxLength: {
+                      value: 4,
+                      message: "OTP must be 4 digits",
+                    },
+                  })}
+                  error={Boolean(errors.otp)}
+                  helperText={errors.otp?.message}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LockClockRoundedIcon sx={{ color: "#94a3b8" }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "16px",
+                      backgroundColor: "#fff",
+                      minHeight: 58,
+                    },
+                  }}
+                />
+              ) : (
+                <Box
+                  sx={{
+                    width: "100%",
                     minHeight: 58,
-                  },
-                }}
-              />
-            )}
+                    borderRadius: "16px",
+                    border: "1px dashed rgba(15, 23, 42, 0.18)",
+                    display: "flex",
+                    alignItems: "center",
+                    px: 2,
+                    color: "#94a3b8",
+                    background: "rgba(248,250,252,0.8)",
+                    fontSize: 14,
+                    fontWeight: 700,
+                  }}
+                >
+                  Click Get OTP to receive your verification code.
+                </Box>
+              )}
+            </Box>
 
-            {!otpSent ? (
-              <LoadingButton
-                type="button"
-                loading={resendOtpStatus === "pending"}
-                onClick={handleSendOtp}
-                variant="contained"
-                fullWidth
-                sx={{
-                  height: 56,
-                  borderRadius: "16px",
-                  fontWeight: 900,
-                  fontSize: 14,
-                  letterSpacing: 0.5,
-                  textTransform: "uppercase",
-                  background:
-                    "linear-gradient(135deg, #111827 0%, #050505 55%, #c99522 140%)",
-                  boxShadow: "0 16px 35px rgba(15, 23, 42, 0.22)",
-                  "&:hover": {
-                    background:
-                      "linear-gradient(135deg, #000000 0%, #111827 55%, #b8860b 140%)",
-                    boxShadow: "0 20px 42px rgba(15, 23, 42, 0.28)",
-                  },
-                }}
-              >
-                Get OTP
-              </LoadingButton>
-            ) : (
-              <Stack spacing={1.5}>
+            <Box
+              sx={{
+                minHeight: 128,
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              {!otpSent ? (
                 <LoadingButton
-                  loading={otpVerificationStatus === "pending"}
-                  type="submit"
+                  type="button"
+                  loading={resendOtpStatus === "pending"}
+                  onClick={handleSendOtp}
                   variant="contained"
                   fullWidth
                   sx={{
@@ -486,27 +496,55 @@ export const OtpVerfication = () => {
                     },
                   }}
                 >
-                  Verify OTP
+                  Get OTP
                 </LoadingButton>
+              ) : (
+                <Stack spacing={1.5} sx={{ width: "100%" }}>
+                  <LoadingButton
+                    loading={otpVerificationStatus === "pending"}
+                    type="submit"
+                    variant="contained"
+                    fullWidth
+                    sx={{
+                      height: 56,
+                      borderRadius: "16px",
+                      fontWeight: 900,
+                      fontSize: 14,
+                      letterSpacing: 0.5,
+                      textTransform: "uppercase",
+                      background:
+                        "linear-gradient(135deg, #111827 0%, #050505 55%, #c99522 140%)",
+                      boxShadow: "0 16px 35px rgba(15, 23, 42, 0.22)",
+                      "&:hover": {
+                        background:
+                          "linear-gradient(135deg, #000000 0%, #111827 55%, #b8860b 140%)",
+                        boxShadow: "0 20px 42px rgba(15, 23, 42, 0.28)",
+                      },
+                    }}
+                  >
+                    Verify OTP
+                  </LoadingButton>
 
-                <Button
-                  type="button"
-                  onClick={handleSendOtp}
-                  disabled={resendOtpStatus === "pending"}
-                  sx={{
-                    color: "#111827",
-                    fontWeight: 800,
-                    textTransform: "none",
-                    "&:hover": {
-                      background: "rgba(201, 149, 34, 0.08)",
-                      color: "#c99522",
-                    },
-                  }}
-                >
-                  Resend OTP
-                </Button>
-              </Stack>
-            )}
+                  <Button
+                    type="button"
+                    onClick={handleSendOtp}
+                    disabled={resendOtpStatus === "pending"}
+                    sx={{
+                      height: 48,
+                      color: "#111827",
+                      fontWeight: 800,
+                      textTransform: "none",
+                      "&:hover": {
+                        background: "rgba(201, 149, 34, 0.08)",
+                        color: "#c99522",
+                      },
+                    }}
+                  >
+                    Resend OTP
+                  </Button>
+                </Stack>
+              )}
+            </Box>
 
             <Button
               component={Link}
