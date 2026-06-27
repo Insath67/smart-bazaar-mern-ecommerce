@@ -33,8 +33,6 @@ import { toast } from "react-toastify";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
-import BrandingWatermarkOutlinedIcon from "@mui/icons-material/BrandingWatermarkOutlined";
-import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
 import PercentOutlinedIcon from "@mui/icons-material/PercentOutlined";
@@ -61,7 +59,6 @@ export const AddProduct = () => {
   const categories = useSelector(selectCategories) || [];
   const productAddStatus = useSelector(selectProductAddStatus);
 
-  const is900 = useMediaQuery(theme.breakpoints.down(900));
   const is700 = useMediaQuery(theme.breakpoints.down(700));
   const is480 = useMediaQuery(theme.breakpoints.down(480));
 
@@ -88,12 +85,16 @@ export const AddProduct = () => {
   }, [dispatch]);
 
   const handleAddProduct = (data) => {
+    const images = [data.image0, data.image1, data.image2, data.image3].filter(
+      (image) => image && image.trim() !== ""
+    );
+
     const newProduct = {
       ...data,
       price: Number(data.price),
       discountPercentage: Number(data.discountPercentage),
       stockQuantity: Number(data.stockQuantity),
-      images: [data.image0, data.image1, data.image2, data.image3],
+      images,
     };
 
     delete newProduct.image0;
@@ -581,7 +582,7 @@ export const AddProduct = () => {
                         fontSize: ".88rem",
                       }}
                     >
-                      Add thumbnail and gallery image URLs.
+                      Add thumbnail and gallery image URLs. Extra image fields are optional.
                     </Typography>
                   </Stack>
                 </Stack>
@@ -623,13 +624,31 @@ export const AddProduct = () => {
                     <Stack key={index}>
                       <Typography sx={{ fontWeight: 950, mb: 1 }}>
                         Image URL {index + 1}
+                        {index > 0 && (
+                          <Typography
+                            component="span"
+                            sx={{
+                              ml: 0.8,
+                              color: "#94a3b8",
+                              fontSize: ".8rem",
+                              fontWeight: 800,
+                            }}
+                          >
+                            Optional
+                          </Typography>
+                        )}
                       </Typography>
                       <TextField
                         fullWidth
                         placeholder={`Paste product image URL ${index + 1}`}
-                        {...register(`image${index}`, {
-                          required: "Image is required",
-                        })}
+                        {...register(
+                          `image${index}`,
+                          index === 0
+                            ? {
+                                required: "Image URL 1 is required",
+                              }
+                            : {}
+                        )}
                         error={Boolean(errors[`image${index}`])}
                         helperText={errors[`image${index}`]?.message}
                         InputProps={{
