@@ -47,6 +47,44 @@ function App() {
   useAuthCheck();
   useFetchLoggedInUserDetails(loggedInUser);
 
+  if (!isAuthChecked) {
+    return (
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background:
+            "linear-gradient(135deg, #ffffff 0%, #f8fafc 55%, #fff7ed 100%)",
+          color: "#111827",
+          fontSize: "20px",
+          fontWeight: "800",
+          letterSpacing: "-0.02em",
+        }}
+      >
+        Loading Smart Bazaar...
+      </div>
+    );
+  }
+
+  const AdminOnly = ({ children }) => {
+    if (!loggedInUser?.isAdmin) {
+      return <Navigate to="/" replace />;
+    }
+
+    return <Protected>{children}</Protected>;
+  };
+
+  const UserOnly = ({ children }) => {
+    if (loggedInUser?.isAdmin) {
+      return <Navigate to="/admin/dashboard" replace />;
+    }
+
+    return <Protected>{children}</Protected>;
+  };
+
   const routes = createBrowserRouter(
     createRoutesFromElements(
       <>
@@ -55,6 +93,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/verify-otp" element={<OtpVerificationPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+
         <Route
           path="/reset-password/:userId/:passwordResetToken"
           element={<ResetPasswordPage />}
@@ -79,143 +118,148 @@ function App() {
           }
         />
 
-        {loggedInUser?.isAdmin ? (
-          <>
-            {/* Admin Routes */}
-            <Route path="/" element={<Navigate to="/admin/dashboard" />} />
-            <Route path="/admin" element={<Navigate to="/admin/dashboard" />} />
+        {/* Root Redirect */}
+        <Route
+          path="/"
+          element={
+            loggedInUser?.isAdmin ? (
+              <Navigate to="/admin/dashboard" replace />
+            ) : (
+              <UserOnly>
+                <HomePage />
+              </UserOnly>
+            )
+          }
+        />
 
-            <Route
-              path="/admin/dashboard"
-              element={
-                <Protected>
-                  <AdminDashboardPage />
-                </Protected>
-              }
-            />
+        {/* Admin Routes */}
+        <Route
+          path="/admin"
+          element={<Navigate to="/admin/dashboard" replace />}
+        />
 
-            <Route
-              path="/admin/product-update/:id"
-              element={
-                <Protected>
-                  <ProductUpdatePage />
-                </Protected>
-              }
-            />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <AdminOnly>
+              <AdminDashboardPage />
+            </AdminOnly>
+          }
+        />
 
-            <Route
-              path="/admin/add-product"
-              element={
-                <Protected>
-                  <AddProductPage />
-                </Protected>
-              }
-            />
+        <Route
+          path="/admin/product-update/:id"
+          element={
+            <AdminOnly>
+              <ProductUpdatePage />
+            </AdminOnly>
+          }
+        />
 
-            <Route
-              path="/admin/orders"
-              element={
-                <Protected>
-                  <AdminOrdersPage />
-                </Protected>
-              }
-            />
+        <Route
+          path="/admin/add-product"
+          element={
+            <AdminOnly>
+              <AddProductPage />
+            </AdminOnly>
+          }
+        />
 
-            <Route
-              path="/admin/profile"
-              element={
-                <Protected>
-                  <AdminProfilePage />
-                </Protected>
-              }
-            />
+        <Route
+          path="/admin/orders"
+          element={
+            <AdminOnly>
+              <AdminOrdersPage />
+            </AdminOnly>
+          }
+        />
 
-            {/* Backup profile route for admin */}
-            <Route
-              path="/profile"
-              element={
-                <Protected>
-                  <AdminProfilePage />
-                </Protected>
-              }
-            />
+        <Route
+          path="/admin/profile"
+          element={
+            <AdminOnly>
+              <AdminProfilePage />
+            </AdminOnly>
+          }
+        />
 
-            <Route path="*" element={<Navigate to="/admin/dashboard" />} />
-          </>
-        ) : (
-          <>
-            {/* User Routes */}
-            <Route
-              path="/"
-              element={
-                <Protected>
-                  <HomePage />
-                </Protected>
-              }
-            />
+        {/* User Routes */}
+        <Route
+          path="/cart"
+          element={
+            <UserOnly>
+              <CartPage />
+            </UserOnly>
+          }
+        />
 
-            <Route
-              path="/cart"
-              element={
-                <Protected>
-                  <CartPage />
-                </Protected>
-              }
-            />
+        <Route
+          path="/profile"
+          element={
+            loggedInUser?.isAdmin ? (
+              <AdminOnly>
+                <AdminProfilePage />
+              </AdminOnly>
+            ) : (
+              <UserOnly>
+                <UserProfilePage />
+              </UserOnly>
+            )
+          }
+        />
 
-            <Route
-              path="/profile"
-              element={
-                <Protected>
-                  <UserProfilePage />
-                </Protected>
-              }
-            />
+        <Route
+          path="/checkout"
+          element={
+            <UserOnly>
+              <CheckoutPage />
+            </UserOnly>
+          }
+        />
 
-            <Route
-              path="/checkout"
-              element={
-                <Protected>
-                  <CheckoutPage />
-                </Protected>
-              }
-            />
+        <Route
+          path="/order-success/:id"
+          element={
+            <UserOnly>
+              <OrderSuccessPage />
+            </UserOnly>
+          }
+        />
 
-            <Route
-              path="/order-success/:id"
-              element={
-                <Protected>
-                  <OrderSuccessPage />
-                </Protected>
-              }
-            />
+        <Route
+          path="/orders"
+          element={
+            <UserOnly>
+              <UserOrdersPage />
+            </UserOnly>
+          }
+        />
 
-            <Route
-              path="/orders"
-              element={
-                <Protected>
-                  <UserOrdersPage />
-                </Protected>
-              }
-            />
+        <Route
+          path="/wishlist"
+          element={
+            <UserOnly>
+              <WishlistPage />
+            </UserOnly>
+          }
+        />
 
-            <Route
-              path="/wishlist"
-              element={
-                <Protected>
-                  <WishlistPage />
-                </Protected>
-              }
-            />
-
-            <Route path="*" element={<NotFoundPage />} />
-          </>
-        )}
+        {/* Fallback */}
+        <Route
+          path="*"
+          element={
+            loggedInUser?.isAdmin ? (
+              <Navigate to="/admin/dashboard" replace />
+            ) : (
+              <NotFoundPage />
+            )
+          }
+        />
       </>
     )
   );
 
-  return isAuthChecked ? <RouterProvider router={routes} /> : "";
+  return <RouterProvider router={routes} />;
 }
 
 export default App;
