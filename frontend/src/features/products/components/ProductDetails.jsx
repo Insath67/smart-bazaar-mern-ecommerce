@@ -398,19 +398,7 @@ export const ProductDetails = () => {
                         minHeight: is480 ? "320px" : "520px",
                       }}
                     >
-                      <Chip
-                        label="Premium Pick"
-                        sx={{
-                          position: "absolute",
-                          top: 18,
-                          left: 18,
-                          zIndex: 4,
-                          background: "rgba(255,255,255,0.92)",
-                          fontWeight: 900,
-                          border: "1px solid rgba(15,23,42,0.08)",
-                          backdropFilter: "blur(10px)",
-                        }}
-                      />
+                                        
 
                       {is1200 ? (
                         <Stack>
